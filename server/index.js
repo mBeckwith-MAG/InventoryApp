@@ -1,12 +1,10 @@
 const express = require("express");
 const cors = require("cors");
 
-const app = express();
-const PORT = 8080;
 
+const PORT = 8080;
 const inventoryBoardId = 18400257085;
 const inventoryBoardColumns = {
-  uid: 'pulse_id_mm22jxg8',
   status: 'status',
   store: 'multi_selecti0j9cnxp',
   carType: 'single_selectdn7oazf',
@@ -21,6 +19,8 @@ const inventoryBoardColumns = {
   priority: 'color_mm1rnnyt'
 };
 
+
+const app = express();
 app.use(cors());
 
 const apiMiddleware = (req, res, next) => {
@@ -79,10 +79,10 @@ app.get('/', (req, res) => {
 
 app.get('/test', apiMiddleware, async (req, res) => {
 try {
-    const apiResult = await req.fetchToApi({
+    const response = await req.fetchToApi({
         'query': `query { boards (ids: ${inventoryBoardId}) { name } }`
     });
-    res.status(200).json(apiResult);
+    res.status(200).json(response);
   } catch (error) {
     res.status(500).send('API Error');
   }
@@ -91,7 +91,7 @@ try {
 app.get('/get-items', apiMiddleware, async (req, res) => {
     const columnIds = Object.values(inventoryBoardColumns).map(id => `"${id.toString()}"`).join(',');
     try {
-        const apiResult = await req.fetchToApi({
+        const response = await req.fetchToApi({
             'query': `query { 
                 boards (ids: ${inventoryBoardId}) {
                     items_page(limit: 500) {
@@ -109,9 +109,9 @@ app.get('/get-items', apiMiddleware, async (req, res) => {
                 }
             }`
         });
-        res.status(200).json(apiResult);
+        res.status(200).json(response);
     } catch (error) {
-        res.status(500).send('API Error');
+        res.status(500).send({ error });
     }
 });
 
