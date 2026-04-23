@@ -1,26 +1,39 @@
 <template>
   <div v-if="loading">Loading...</div>
-  <div v-else-if="!loading && !items.length">No Items</div>
-  <div v-else v-for="item in items" :key="item.id">{{ item }}</div>
+  <div v-else-if="itemCount">
+    <p class="link-row-label">Pick a Store</p>
+    <div class="link-row">
+      <div v-for="store in storeOptions">
+        <RouteButton :name="store" />
+      </div>
+    </div>
+  </div>
+  <div v-else>
+    <p>Something went wrong... Please reach out to mbeckwith@morganautogroup.com</p>
+  </div>
 </template>
 
-
 <script setup>
-import { onMounted, ref } from 'vue';
-import { useMondayStore } from './stores/monday';
-import { storeToRefs } from 'pinia';
+import { onMounted } from 'vue'
+import { useMondayStore } from '@/stores/monday'
+import { storeToRefs } from 'pinia'
+import RouteButton from '@/components/RouteButton.vue'
 
-const store = useMondayStore();
-const { loading } = storeToRefs(store);
-const { getItemsByStore } = store
-
-const items = ref([])
+const store = useMondayStore()
+const { getItems } = store
+const { loading, itemCount, storeOptions } = storeToRefs(store)
 
 onMounted(() => {
-  getItemsByStore('morgan-chevy')
-  .then(res => items.value = res)
+  getItems()
 })
 </script>
 
-
-<style scoped></style>
+<style scoped>
+.link-row-label {
+  text-align: center;
+}
+.link-row {
+  display: flex;
+  justify-content: space-evenly;
+}
+</style>

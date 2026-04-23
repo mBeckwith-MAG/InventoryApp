@@ -115,6 +115,28 @@ app.get('/get-items', apiMiddleware, async (req, res) => {
     }
 });
 
+app.get('/update-prio', apiMiddleware, async (req, res) => {
+  const { itemId, newValue } = req.query
+  const val = JSON.stringify({ index: Number(newValue) })
+  try {
+        const response = await req.fetchToApi({
+            'query': `mutation {
+              change_column_value (
+                board_id: ${inventoryBoardId},
+                item_id: ${Number(itemId)},
+                column_id: "color_mm1rnnyt",
+                value: "${val.replace(/"/g, '\\"')}"
+              ){
+                id
+              }
+            }`
+        });
+        res.status(200).json(response);
+    } catch (error) {
+        res.status(500).send({ error });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`);
 });

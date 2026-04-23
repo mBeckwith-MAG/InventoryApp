@@ -1,17 +1,17 @@
 <template>
-    <RouterLink :to="`/${url}`" custom v-slot="{ navigate }">
-      <Button @click="navigate" role="link">
-        {{ name }}
-      </Button>
-    </RouterLink>
+  <RouterLink :to="`/store/${url}`" custom v-slot="{ navigate }">
+    <Button @click="navigate" role="link" severity="info">
+      {{ name }}
+    </Button>
+  </RouterLink>
 </template>
 <script setup>
-import { computed } from 'vue';
-import { RouterLink } from 'vue-router';
+import { computed } from 'vue'
+import { RouterLink } from 'vue-router'
 const props = defineProps({
-    name: String
+  name: String,
 })
 const url = computed(() => {
-    return props.name.toLowerCase().replaceAll(' ', '-')
+  return props.name.toLowerCase().replaceAll(' ', '-')
 })
 </script>
