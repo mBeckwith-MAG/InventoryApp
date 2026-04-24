@@ -6,6 +6,12 @@ import 'primeicons/primeicons.css'
 
 import Button from 'primevue/button'
 import Card from 'primevue/card'
+import Tab from 'primevue/tab'
+import Tabs from 'primevue/tabs'
+import TabList from 'primevue/tablist'
+import TabPanel from 'primevue/tabpanel'
+import TabPanels from 'primevue/tabpanels'
+import Badge from 'primevue/badge'
 
 import App from './App.vue'
 import router from './router'
@@ -22,5 +28,11 @@ app.use(PrimeVue, {
 
 app.component('Button', Button)
 app.component('Card', Card)
+app.component('Tab', Tab)
+app.component('Tabs', Tabs)
+app.component('TabList', TabList)
+app.component('TabPanel', TabPanel)
+app.component('TabPanels', TabPanels)
+app.component('Badge', Badge)
 
 app.mount('#app')

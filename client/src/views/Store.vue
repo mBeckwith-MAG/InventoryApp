@@ -7,22 +7,30 @@
   </div>
   <div v-if="loading">Loading...</div>
   <div v-else-if="!loading && !itemCount">No Items</div>
-  <div v-else class="dashboard-group">
-    <div v-for="workingItem in workingItems" :key="workingItem.uid">
-      <ItemCard :item="workingItem" />
-    </div>
-  </div>
-  <div>
-    Done Items
-    <div v-for="doneItem in doneItems" :key="doneItem.uid">
-      <ItemRow :itemId="doneItem.uid" />
-    </div>
-  </div>
-  <div>
-    Rejected Items
-    <div v-for="rejectItem in rejectItems" :key="rejectItem.uid">
-      <ItemRow :itemId="rejectItem.uid" :notes="rejectItem.notes" />
-    </div>
+  <div v-else>
+    <Dashboard :workingCount="workingCount" :rejectCount="rejectCount" :doneCount="doneCount">
+      <template #panel-1>
+        <div class="tiles-group">
+          <div v-for="workingItem in workingItems" :key="workingItem.uid">
+            <ItemCard :item="workingItem" />
+          </div>
+        </div>
+      </template>
+      <template #panel-2>
+        <div class="rows-group">
+          <div v-for="rejectItem in rejectItems" :key="rejectItem.uid">
+            <ItemRow :item="rejectItem" class="item reject" />
+          </div>
+        </div>
+      </template>
+      <template #panel-3>
+        <div class="rows-group">
+          <div v-for="doneItem in doneItems" :key="doneItem.uid">
+            <ItemRow :item="doneItem" class="item done" />
+          </div>
+        </div>
+      </template>
+    </Dashboard>
   </div>
 </template>
 
@@ -34,6 +42,7 @@ import { storeToRefs } from 'pinia'
 import HomeButton from '@/components/HomeButton.vue'
 import ItemCard from '@/components/ItemCard.vue'
 import ItemRow from '@/components/ItemRow.vue'
+import Dashboard from '@/components/Dashboard.vue'
 
 const store = useMondayStore()
 const { loading, itemCount } = storeToRefs(store)
@@ -42,7 +51,10 @@ const { getItemsByStore } = store
 const route = useRoute()
 
 const items = ref([])
-const storeName = ref()
+const storeName = ref('')
+const workingCount = ref(0)
+const rejectCount = ref(0)
+const doneCount = ref(0)
 
 onMounted(() => {
   if (route.params.name) {
@@ -53,19 +65,25 @@ onMounted(() => {
 
 const workingItems = computed(() => {
   if (items.value.length) {
-    return items.value.filter((item) => item.status != 'Done' && item.status != 'Reject')
+    const itms = items.value.filter((item) => item.status != 'Done' && item.status != 'Reject')
+    workingCount.value = itms.length
+    return itms
   }
 })
 
 const doneItems = computed(() => {
   if (items.value.length) {
-    return items.value.filter((item) => item.status == 'Done')
+    const itms = items.value.filter((item) => item.status == 'Done')
+    doneCount.value = itms.length
+    return itms
   }
 })
 
 const rejectItems = computed(() => {
   if (items.value.length) {
-    return items.value.filter((item) => item.status == 'Reject')
+    const itms = items.value.filter((item) => item.status == 'Reject')
+    rejectCount.value = itms.length
+    return itms
   }
 })
 </script>
@@ -82,9 +100,21 @@ const rejectItems = computed(() => {
   text-transform: capitalize;
   font-size: xx-large;
 }
-.dashboard-group {
+.non-working-group {
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+  margin: 1rem;
+  padding: 1rem;
+  text-align: center;
+}
+.tiles-group {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+.rows-group {
+  display: grid;
   gap: 1rem;
 }
 </style>

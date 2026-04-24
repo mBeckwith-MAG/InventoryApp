@@ -15,5 +15,6 @@ defineProps({
   flex-direction: column;
   text-align: left;
   margin-top: 1rem;
+  font-size: small;
 }
 </style>

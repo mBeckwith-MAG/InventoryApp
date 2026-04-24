@@ -33,7 +33,8 @@ onMounted(() => {
   text-align: center;
 }
 .link-row {
-  display: flex;
-  justify-content: space-evenly;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
 }
 </style>

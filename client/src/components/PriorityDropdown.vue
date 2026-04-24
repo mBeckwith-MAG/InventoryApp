@@ -75,6 +75,7 @@ const decreasePrio = () => {
   flex-direction: column;
   width: 6rem;
   align-items: center;
+  font-size: small;
 }
 .prio-value {
   display: flex;

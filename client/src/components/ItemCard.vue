@@ -89,6 +89,8 @@ const changePrio = (itemId, newValue) => {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  font-size: small;
+  line-height: 3rem;
 }
 .item-content {
   display: flex;
@@ -103,12 +105,6 @@ const changePrio = (itemId, newValue) => {
 }
 .centered {
   text-align: center;
-}
-.done {
-  border-left: 20px solid rgba(39, 164, 74, 0.3);
-}
-.reject {
-  border-left: 20px solid rgba(164, 39, 39, 0.3);
 }
 .working {
   border-left: 20px solid rgba(164, 122, 39, 0.3);

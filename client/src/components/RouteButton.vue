@@ -1,6 +1,6 @@
 <template>
   <RouterLink :to="`/store/${url}`" custom v-slot="{ navigate }">
-    <Button @click="navigate" role="link" severity="info">
+    <Button @click="navigate" role="link" severity="info" fluid style="font-weight: 900;">
       {{ name }}
     </Button>
   </RouterLink>
